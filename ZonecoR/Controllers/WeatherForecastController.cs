@@ -6,42 +6,102 @@ namespace ZonecoR.Controllers;
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
-    private static List<string> Summaries = new()
+    private static List<string> _summaries = new()
     {   
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
-
-    private readonly ILogger<WeatherForecastController> _logger;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    
+    [HttpGet]
+    public IActionResult GetAll(int? sortStrategy)
     {
-        _logger = logger;
+        if (sortStrategy is null)
+        {
+            return Ok(_summaries);
+        }
+
+        else if (sortStrategy == 1)
+        {
+            var sorted = new List<string>(_summaries);
+            sorted.Sort();
+            return Ok(sorted);
+        }
+
+        else if (sortStrategy == -1)
+        {
+            var sorted = new List<string>(_summaries);
+            sorted.Sort();
+            sorted.Reverse();
+            return Ok(sorted);
+        }
+        
+        return BadRequest("Incorrect value param sortStrategy");
     }
 
-    [HttpGet]
-    public List<string> Get()
+    [HttpGet("{index}")]
+    public IActionResult GetByIndex(int? index)
     {
-        return Summaries;
+        if (index is null || index < 0 || index >= _summaries.Count)
+        {
+            return BadRequest("Incorrect value param index");
+        }
+
+
+        return Ok(_summaries[index.Value]);
+    }
+
+    [HttpGet("find-by-name")]
+    public IActionResult GetCountByName(string? name)
+    {
+        var count = 0;
+        
+        if (string.IsNullOrEmpty(name))
+        {
+            return BadRequest("Incorrect value param name");
+        }
+
+        foreach (var summary in _summaries)
+        {
+            if (summary == name)
+            {
+                count++;
+            }
+        }
+        return Ok(count);
     }
 
     [HttpPost]
-    public IActionResult Add(string name)
+    public IActionResult Add(string? name)
     {
-        Summaries.Add(name);
+        if (string.IsNullOrEmpty(name))
+        {
+            return BadRequest("Incorrect value param name");
+        }
+        
+        _summaries.Add(name);
         return Ok();
     }
 
     [HttpPut]
-    public IActionResult Update (int index, string name)
+    public IActionResult Update(int? index, string? name)
     {
-        Summaries[index] = name;
+        if (index is null || string.IsNullOrEmpty(name) || index < 0 || index >= _summaries.Count)
+        {
+            return BadRequest("Incorrect value param name or index");
+        }
+        
+        _summaries[index.Value] = name;
         return Ok();
     }
 
     [HttpDelete]
-    public IActionResult Delete(int index)
+    public IActionResult Delete(int? index)
     {
-        Summaries.RemoveAt(index);
+        if (index is null || index < 0 || index >= _summaries.Count)
+        {
+            return BadRequest("Incorrect value param index");
+        }
+
+        _summaries.RemoveAt(index.Value);
         return Ok();
     }
 }
