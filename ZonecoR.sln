@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZonecoR.AppHost", "ZonecoR.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZonecoR.ServiceDefaults", "ZonecoR.ServiceDefaults\ZonecoR.ServiceDefaults.csproj", "{93A87FA2-77B3-765B-5C4F-5AE53A543C15}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{F5FB4856-1938-4459-94B8-D40BF5D115B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
