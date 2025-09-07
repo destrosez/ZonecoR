@@ -1,7 +1,7 @@
 # 🎮 ZonecoR
 
 <p align="center">
-  <img src="Assets/banner.png" alt="ZonecoR Banner" width="600"/>
+  <img src="assets/banner.png" alt="ZonecoR Banner" width="600"/>
 </p>
 
 ![.NET](https://img.shields.io/badge/.NET-8.0-blue)
