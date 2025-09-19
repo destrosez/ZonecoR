@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace ZonecoR.Models;
+
+public partial class payment
+{
+    public int id { get; set; }
+
+    public int booking_id { get; set; }
+
+    public decimal amount { get; set; }
+
+    public string method { get; set; } = null!;
+
+    public string status { get; set; } = null!;
+
+    public DateTime? paid_at { get; set; }
+
+    public string? external_id { get; set; }
+
+    public virtual booking booking { get; set; } = null!;
+}
