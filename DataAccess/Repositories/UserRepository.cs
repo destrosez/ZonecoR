@@ -1,5 +1,5 @@
-﻿using DataAccess.Interfaces;
-using Models = DataAccess.Data;
+﻿using Domain.Interfaces;
+using Models = Domain.Models;
 
 namespace DataAccess.Repositories
 {

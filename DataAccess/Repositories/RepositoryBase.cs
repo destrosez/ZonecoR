@@ -1,42 +1,44 @@
 ﻿using System.Linq.Expressions;
-using DataAccess.Data;
-using DataAccess.Interfaces;
+using Domain.Interfaces;
+using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
-        protected readonly AppDbContext RepositoryContext;
+        protected AppDbContext RepositoryContext { get; }
 
-        protected RepositoryBase(AppDbContext repositoryContext)
+        protected RepositoryBase(AppDbContext context)
         {
-            RepositoryContext = repositoryContext;
+            RepositoryContext = context;
         }
 
-        public IQueryable<T> FindAll()
+        public async Task<List<T>> FindAll()
         {
-            return RepositoryContext.Set<T>().AsNoTracking();
+            return await RepositoryContext.Set<T>().AsNoTracking().ToListAsync();
         }
 
-        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
+        public async Task<List<T>> FindByCondition(Expression<Func<T, bool>> expression)
         {
-            return RepositoryContext.Set<T>().Where(expression).AsNoTracking();
+            return await RepositoryContext.Set<T>().AsNoTracking().Where(expression).ToListAsync();
         }
 
-        public void Create(T entity)
+        public async Task Create(T entity)
         {
-            RepositoryContext.Set<T>().Add(entity);
+            await RepositoryContext.Set<T>().AddAsync(entity);
         }
 
-        public void Update(T entity)
+        public Task Update(T entity)
         {
             RepositoryContext.Set<T>().Update(entity);
+            return Task.CompletedTask;
         }
 
-        public void Delete(T entity)
+        public Task Delete(T entity)
         {
             RepositoryContext.Set<T>().Remove(entity);
+            return Task.CompletedTask;
         }
     }
 }

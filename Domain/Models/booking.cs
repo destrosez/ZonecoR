@@ -1,6 +1,4 @@
-﻿using NpgsqlTypes;
-
-namespace DataAccess.Data;
+﻿namespace Domain.Models;
 
 public partial class booking
 {
@@ -20,7 +18,8 @@ public partial class booking
 
     public decimal? total_amount { get; set; }
 
-    public NpgsqlRange<DateTime>? period { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
 
     public virtual ICollection<payment> payments { get; set; } = new List<payment>();
 

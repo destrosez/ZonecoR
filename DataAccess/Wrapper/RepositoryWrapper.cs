@@ -1,17 +1,17 @@
-﻿using DataAccess.Data;
-using DataAccess.Interfaces;
-using DataAccess.Repositories;
+﻿using DataAccess.Repositories;
+using Domain.Interfaces;
+using Domain.Models;
 
 namespace DataAccess.Wrapper
 {
     public class RepositoryWrapper : IRepositoryWrapper
     {
-        private readonly AppDbContext _repoContext;
-        private IUserRepository _user;
+        private readonly AppDbContext _ctx;
+        private IUserRepository? _user;
 
-        public RepositoryWrapper(AppDbContext repoContext)
+        public RepositoryWrapper(AppDbContext ctx)
         {
-            _repoContext = repoContext;
+            _ctx = ctx;
         }
 
         public IUserRepository User
@@ -20,15 +20,16 @@ namespace DataAccess.Wrapper
             {
                 if (_user == null)
                 {
-                    _user = new UserRepository(_repoContext);
+                    _user = new UserRepository(_ctx);
                 }
+
                 return _user;
             }
         }
 
-        public void Save()
+        public async Task Save()
         {
-            _repoContext.SaveChanges();
+            await _ctx.SaveChangesAsync();
         }
     }
 }

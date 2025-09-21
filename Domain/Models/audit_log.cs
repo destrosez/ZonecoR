@@ -1,4 +1,4 @@
-﻿namespace DataAccess.Data;
+﻿namespace Domain.Models;
 
 public partial class audit_log
 {

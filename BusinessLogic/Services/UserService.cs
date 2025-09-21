@@ -1,10 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BusinessLogic.Interfaces;
-using DataAccess.Wrapper;
-using Microsoft.EntityFrameworkCore;
-using Models = DataAccess.Data;
+﻿using Domain.Interfaces;
+using Domain.Models;
 
 namespace BusinessLogic.Services
 {
@@ -17,40 +12,44 @@ namespace BusinessLogic.Services
             _repo = repo;
         }
 
-        public Task<List<Models.user>> GetAll()
+        public async Task<List<user>> GetAll()
         {
-            return _repo.User.FindAll().ToListAsync();
+            return await _repo.User.FindAll();
         }
 
-        public Task<Models.user?> GetById(int id)
+        public async Task<user?> GetById(int id)
         {
-            var entity = _repo.User.FindByCondition(x => x.id == id).FirstOrDefault();
-            return Task.FromResult(entity);
-        }
-
-        public Task Create(Models.user model)
-        {
-            _repo.User.Create(model);
-            _repo.Save();
-            return Task.CompletedTask;
-        }
-
-        public Task Update(Models.user model)
-        {
-            _repo.User.Update(model);
-            _repo.Save();
-            return Task.CompletedTask;
-        }
-
-        public Task Delete(int id)
-        {
-            var entity = _repo.User.FindByCondition(x => x.id == id).FirstOrDefault();
-            if (entity != null)
+            var list = await _repo.User.FindByCondition(x => x.id == id);
+            if (list.Count == 0)
             {
-                _repo.User.Delete(entity);
-                _repo.Save();
+                return null;
             }
-            return Task.CompletedTask;
+
+            return list[0];
+        }
+
+        public async Task Create(user model)
+        {
+            await _repo.User.Create(model);
+            await _repo.Save();
+        }
+
+        public async Task Update(user model)
+        {
+            await _repo.User.Update(model);
+            await _repo.Save();
+        }
+
+        public async Task Delete(int id)
+        {
+            var list = await _repo.User.FindByCondition(x => x.id == id);
+            if (list.Count == 0)
+            {
+                return;
+            }
+
+            await _repo.User.Delete(list[0]);
+            await _repo.Save();
         }
     }
 }

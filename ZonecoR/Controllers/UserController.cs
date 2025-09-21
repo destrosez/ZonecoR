@@ -1,6 +1,6 @@
-﻿using BusinessLogic.Interfaces;
+﻿using Domain.Interfaces;
+using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Models = DataAccess.Data;
 
 namespace ZonecoR.Controllers
 {
@@ -18,32 +18,33 @@ namespace ZonecoR.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _service.GetAll());
+            var data = await _service.GetAll();
+            return Ok(data);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var item = await _service.GetById(id);
-            if (item == null)
+            var m = await _service.GetById(id);
+            if (m == null)
             {
                 return NotFound();
             }
 
-            return Ok(item);
+            return Ok(m);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Models.user model)
+        public async Task<IActionResult> Create([FromBody] user m)
         {
-            await _service.Create(model);
+            await _service.Create(m);
             return Ok();
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] Models.user model)
+        public async Task<IActionResult> Update([FromBody] user m)
         {
-            await _service.Update(model);
+            await _service.Update(m);
             return Ok();
         }
 

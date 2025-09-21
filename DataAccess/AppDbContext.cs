@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NpgsqlTypes;
 
-namespace DataAccess.Data;
+namespace Domain.Models;
 
 public partial class AppDbContext : DbContext
 {
@@ -49,32 +50,36 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.id).HasName("bookings_pkey");
 
-            entity.HasIndex(e => new { e.seat_id, e.period }, "ex_seat_time_n_overlap")
-                .HasFilter("(status = 'active'::text)")
+            // ⚡️ Сначала объявляем shadow property
+            entity.Property<NpgsqlRange<DateTime>>("period")
+                .HasColumnType("tstzrange")
+                .HasComputedColumnSql("tstzrange(start_time, end_time, '[]')", stored: true);
+
+            // Теперь можно использовать period в индексах
+            entity.HasIndex("seat_id", "period")
+                .HasDatabaseName("ex_seat_time_no_overlap")
+                .HasMethod("gist")
+                .HasFilter("status = 'active'::text");
+
+            entity.HasIndex("period")
+                .HasDatabaseName("idx_bookings_period")
                 .HasMethod("gist");
 
-            entity.HasIndex(e => e.period, "idx_bookings_period").HasMethod("gist");
+            entity.HasIndex(e => e.seat_id).HasDatabaseName("idx_bookings_seat");
+            entity.HasIndex(e => e.user_id).HasDatabaseName("idx_bookings_user");
 
-            entity.HasIndex(e => e.seat_id, "idx_bookings_seat");
+            entity.Property(e => e.status)
+                .HasDefaultValueSql("'active'::text");
 
-            entity.HasIndex(e => e.user_id, "idx_bookings_user");
+            entity.Property(e => e.total_amount)
+                .HasPrecision(10, 2);
 
-            entity.Property(e => e.period).HasComputedColumnSql("tstzrange(start_time, end_time, '[)'::text)", true);
-            entity.Property(e => e.status).HasDefaultValueSql("'active'::text");
-            entity.Property(e => e.total_amount).HasPrecision(10, 2);
-
-            entity.HasOne(d => d.seat).WithMany(p => p.bookings)
+            entity.HasOne(d => d.seat)
+                .WithMany(p => p.bookings)
                 .HasForeignKey(d => d.seat_id)
                 .HasConstraintName("bookings_seat_id_fkey");
-
-            entity.HasOne(d => d.tariff).WithMany(p => p.bookings)
-                .HasForeignKey(d => d.tariff_id)
-                .HasConstraintName("bookings_tariff_id_fkey");
-
-            entity.HasOne(d => d.user).WithMany(p => p.bookings)
-                .HasForeignKey(d => d.user_id)
-                .HasConstraintName("bookings_user_id_fkey");
         });
+
 
         modelBuilder.Entity<payment>(entity =>
         {
