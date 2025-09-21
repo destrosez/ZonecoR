@@ -1,38 +1,32 @@
+using BusinessLogic.Interfaces;
+using BusinessLogic.Services;
+using DataAccess.Data;
+using DataAccess.Wrapper;
+using Microsoft.EntityFrameworkCore;
 
-namespace ZonecoR;
+var builder = WebApplication.CreateBuilder(args);
 
-public class Program
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// DbContext (подтягивает строку из appsettings*.json -> ConnectionStrings:Default)
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// DI
+builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
 {
-    public static void Main(string[] args)
-    {
-        var builder = WebApplication.CreateBuilder(args);
-        builder.AddServiceDefaults();
-
-        // Add services to the container.
-
-        builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-
-        var app = builder.Build();
-
-        app.MapDefaultEndpoints();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
-        app.UseHttpsRedirection();
-
-        app.UseAuthorization();
-
-
-        app.MapControllers();
-
-        app.Run();
-    }
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+app.Run();

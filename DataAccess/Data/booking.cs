@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using NpgsqlTypes;
+﻿using NpgsqlTypes;
 
-namespace DataAccess.Data.Entities;
+namespace DataAccess.Data;
 
 public partial class booking
 {
