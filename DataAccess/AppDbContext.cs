@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using DataAccess.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using ZonecoR.Models;
 
-namespace ZonecoR.Data;
+namespace DataAccess.Data;
 
 public partial class AppDbContext : DbContext
 {

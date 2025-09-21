@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ZonecoR.Models;
+namespace DataAccess.Data.Entities;
 
 public partial class pc_spec
 {

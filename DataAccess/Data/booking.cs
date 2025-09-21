@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NpgsqlTypes;
 
-namespace ZonecoR.Models;
+namespace DataAccess.Data.Entities;
 
 public partial class booking
 {
