@@ -50,12 +50,10 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.id).HasName("bookings_pkey");
 
-            // ⚡️ Сначала объявляем shadow property
             entity.Property<NpgsqlRange<DateTime>>("period")
                 .HasColumnType("tstzrange")
                 .HasComputedColumnSql("tstzrange(start_time, end_time, '[]')", stored: true);
 
-            // Теперь можно использовать period в индексах
             entity.HasIndex("seat_id", "period")
                 .HasDatabaseName("ex_seat_time_no_overlap")
                 .HasMethod("gist")
