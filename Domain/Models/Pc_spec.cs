@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models;
 
-public partial class pc_spec
+public class Pc_spec
 {
     public int seat_id { get; set; }
 
@@ -16,5 +16,5 @@ public partial class pc_spec
 
     public string? extras { get; set; }
 
-    public virtual seat seat { get; set; } = null!;
+    public virtual Seat seat { get; set; } = null!;
 }

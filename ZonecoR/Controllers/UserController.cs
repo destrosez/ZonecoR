@@ -35,7 +35,7 @@ namespace ZonecoR.Controllers
         [SwaggerOperation(Summary = "Создание пользователя")]
         public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
         {
-            var entity = request.Adapt<user>();
+            var entity = request.Adapt<User>();
             entity.password_hash = request.Password;
             await _service.Create(entity);
             return Ok();
@@ -45,7 +45,7 @@ namespace ZonecoR.Controllers
         [SwaggerOperation(Summary = "Обновление пользователя")]
         public async Task<IActionResult> Update([FromBody] UserResponse request)
         {
-            var entity = request.Adapt<user>();
+            var entity = request.Adapt<User>();
             await _service.Update(entity);
             return Ok();
         }

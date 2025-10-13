@@ -2,7 +2,7 @@
 
 namespace Domain.Interfaces
 {
-    public interface IUserRepository : IRepositoryBase<user>
+    public interface IUserRepository : IRepositoryBase<User>
     {
         
     }

@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models;
 
-public partial class tariff
+public class Tariff
 {
     public int id { get; set; }
 
@@ -14,5 +14,5 @@ public partial class tariff
 
     public DateOnly? valid_to { get; set; }
 
-    public virtual ICollection<booking> bookings { get; set; } = new List<booking>();
+    public virtual ICollection<Booking> bookings { get; set; } = new List<Booking>();
 }

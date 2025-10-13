@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using NpgsqlTypes;
 
-namespace Domain.Models;
+namespace DataAccess;
 
 public partial class AppDbContext : DbContext
 {
@@ -10,29 +11,29 @@ public partial class AppDbContext : DbContext
     {
     }
 
-    public virtual DbSet<audit_log> audit_logs { get; set; }
+    public virtual DbSet<Audit_log> audit_logs { get; set; }
 
-    public virtual DbSet<booking> bookings { get; set; }
+    public virtual DbSet<Booking> bookings { get; set; }
 
-    public virtual DbSet<payment> payments { get; set; }
+    public virtual DbSet<Payment> payments { get; set; }
 
-    public virtual DbSet<pc_spec> pc_specs { get; set; }
+    public virtual DbSet<Pc_spec> pc_specs { get; set; }
 
-    public virtual DbSet<role> roles { get; set; }
+    public virtual DbSet<Role> roles { get; set; }
 
-    public virtual DbSet<room> rooms { get; set; }
+    public virtual DbSet<Room> rooms { get; set; }
 
-    public virtual DbSet<seat> seats { get; set; }
+    public virtual DbSet<Seat> seats { get; set; }
 
-    public virtual DbSet<tariff> tariffs { get; set; }
+    public virtual DbSet<Tariff> tariffs { get; set; }
 
-    public virtual DbSet<user> users { get; set; }
+    public virtual DbSet<User> users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasPostgresExtension("btree_gist");
 
-        modelBuilder.Entity<audit_log>(entity =>
+        modelBuilder.Entity<Audit_log>(entity =>
         {
             entity.HasKey(e => e.id).HasName("audit_logs_pkey");
 
@@ -46,7 +47,7 @@ public partial class AppDbContext : DbContext
                 .HasConstraintName("audit_logs_user_id_fkey");
         });
 
-        modelBuilder.Entity<booking>(entity =>
+        modelBuilder.Entity<Booking>(entity =>
         {
             entity.HasKey(e => e.id).HasName("bookings_pkey");
 
@@ -79,7 +80,7 @@ public partial class AppDbContext : DbContext
         });
 
 
-        modelBuilder.Entity<payment>(entity =>
+        modelBuilder.Entity<Payment>(entity =>
         {
             entity.HasKey(e => e.id).HasName("payments_pkey");
 
@@ -93,7 +94,7 @@ public partial class AppDbContext : DbContext
                 .HasConstraintName("payments_booking_id_fkey");
         });
 
-        modelBuilder.Entity<pc_spec>(entity =>
+        modelBuilder.Entity<Pc_spec>(entity =>
         {
             entity.HasKey(e => e.seat_id).HasName("pc_specs_pkey");
 
@@ -101,18 +102,18 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.extras).HasColumnType("jsonb");
 
             entity.HasOne(d => d.seat).WithOne(p => p.pc_spec)
-                .HasForeignKey<pc_spec>(d => d.seat_id)
+                .HasForeignKey<Pc_spec>(d => d.seat_id)
                 .HasConstraintName("pc_specs_seat_id_fkey");
         });
 
-        modelBuilder.Entity<role>(entity =>
+        modelBuilder.Entity<Role>(entity =>
         {
             entity.HasKey(e => e.id).HasName("roles_pkey");
 
             entity.HasIndex(e => e.code, "roles_code_key").IsUnique();
         });
 
-        modelBuilder.Entity<room>(entity =>
+        modelBuilder.Entity<Room>(entity =>
         {
             entity.HasKey(e => e.id).HasName("rooms_pkey");
 
@@ -121,7 +122,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.is_active).HasDefaultValue(true);
         });
 
-        modelBuilder.Entity<seat>(entity =>
+        modelBuilder.Entity<Seat>(entity =>
         {
             entity.HasKey(e => e.id).HasName("seats_pkey");
 
@@ -134,7 +135,7 @@ public partial class AppDbContext : DbContext
                 .HasConstraintName("seats_room_id_fkey");
         });
 
-        modelBuilder.Entity<tariff>(entity =>
+        modelBuilder.Entity<Tariff>(entity =>
         {
             entity.HasKey(e => e.id).HasName("tariffs_pkey");
 
@@ -144,7 +145,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.price_per_hour).HasPrecision(10, 2);
         });
 
-        modelBuilder.Entity<user>(entity =>
+        modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.id).HasName("users_pkey");
 
@@ -158,10 +159,10 @@ public partial class AppDbContext : DbContext
             entity.HasMany(d => d.roles).WithMany(p => p.users)
                 .UsingEntity<Dictionary<string, object>>(
                     "user_role",
-                    r => r.HasOne<role>().WithMany()
+                    r => r.HasOne<Role>().WithMany()
                         .HasForeignKey("role_id")
                         .HasConstraintName("user_roles_role_id_fkey"),
-                    l => l.HasOne<user>().WithMany()
+                    l => l.HasOne<User>().WithMany()
                         .HasForeignKey("user_id")
                         .HasConstraintName("user_roles_user_id_fkey"),
                     j =>

@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models;
 
-public partial class payment
+public class Payment
 {
     public int id { get; set; }
 
@@ -16,5 +16,5 @@ public partial class payment
 
     public string? external_id { get; set; }
 
-    public virtual booking booking { get; set; } = null!;
+    public virtual Booking booking { get; set; } = null!;
 }

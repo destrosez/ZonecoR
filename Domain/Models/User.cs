@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models;
 
-public partial class user
+public class User
 {
     public int id { get; set; }
 
@@ -16,9 +16,9 @@ public partial class user
 
     public DateTime created_at { get; set; }
 
-    public virtual ICollection<audit_log> audit_logs { get; set; } = new List<audit_log>();
+    public virtual ICollection<Audit_log> audit_logs { get; set; } = new List<Audit_log>();
 
-    public virtual ICollection<booking> bookings { get; set; } = new List<booking>();
+    public virtual ICollection<Booking> bookings { get; set; } = new List<Booking>();
 
-    public virtual ICollection<role> roles { get; set; } = new List<role>();
+    public virtual ICollection<Role> roles { get; set; } = new List<Role>();
 }

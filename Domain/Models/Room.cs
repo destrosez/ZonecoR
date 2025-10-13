@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models;
 
-public partial class room
+public class Room
 {
     public int id { get; set; }
 
@@ -10,5 +10,5 @@ public partial class room
 
     public bool is_active { get; set; }
 
-    public virtual ICollection<seat> seats { get; set; } = new List<seat>();
+    public virtual ICollection<Seat> seats { get; set; } = new List<Seat>();
 }

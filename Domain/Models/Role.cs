@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models;
 
-public partial class role
+public class Role
 {
     public int id { get; set; }
 
@@ -8,5 +8,5 @@ public partial class role
 
     public string name { get; set; } = null!;
 
-    public virtual ICollection<user> users { get; set; } = new List<user>();
+    public virtual ICollection<User> users { get; set; } = new List<User>();
 }

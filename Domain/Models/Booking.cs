@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models;
 
-public partial class booking
+public class Booking
 {
     public int id { get; set; }
 
@@ -21,11 +21,11 @@ public partial class booking
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
 
-    public virtual ICollection<payment> payments { get; set; } = new List<payment>();
+    public virtual ICollection<Payment> payments { get; set; } = new List<Payment>();
 
-    public virtual seat seat { get; set; } = null!;
+    public virtual Seat seat { get; set; } = null!;
 
-    public virtual tariff? tariff { get; set; }
+    public virtual Tariff? tariff { get; set; }
 
-    public virtual user user { get; set; } = null!;
+    public virtual User user { get; set; } = null!;
 }

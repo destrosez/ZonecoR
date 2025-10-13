@@ -3,9 +3,9 @@ using Models = Domain.Models;
 
 namespace DataAccess.Repositories
 {
-    public class UserRepository : RepositoryBase<Models.user>, IUserRepository
+    public class UserRepository : RepositoryBase<Models.User>, IUserRepository
     {
-        public UserRepository(Models.AppDbContext repositoryContext)
+        public UserRepository(AppDbContext repositoryContext)
             : base(repositoryContext)
         {
         }

@@ -4,10 +4,10 @@ namespace Domain.Interfaces
 {
     public interface IUserService
     {
-        Task<List<user>> GetAll();
-        Task<user?> GetById(int id);
-        Task Create(user model);
-        Task Update(user model);
+        Task<List<User>> GetAll();
+        Task<User?> GetById(int id);
+        Task Create(User model);
+        Task Update(User model);
         Task Delete(int id);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models;
 
-public partial class audit_log
+public class Audit_log
 {
     public int id { get; set; }
 
@@ -12,5 +12,5 @@ public partial class audit_log
 
     public DateTime? created_at { get; set; }
 
-    public virtual user? user { get; set; }
+    public virtual User? user { get; set; }
 }

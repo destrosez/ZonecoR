@@ -11,9 +11,9 @@ namespace ZonecoR.Mappings
             TypeAdapterConfig.GlobalSettings.Default
                 .NameMatchingStrategy(NameMatchingStrategy.Flexible);
 
-            TypeAdapterConfig<CreateUserRequest, user>.NewConfig();
+            TypeAdapterConfig<CreateUserRequest, User>.NewConfig();
 
-            TypeAdapterConfig<user, UserResponse>
+            TypeAdapterConfig<User, UserResponse>
                 .NewConfig()
                 .Map(d => d.CreatedUtc, s => s.created_at);
         }
